@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
         public Text _level,_limitedCounter;
         public Button _nextGame;
         public GameObject _pausePage, _gameModePage, _gameOverPage;
+        public GameObject _exit;
         private BallController ballController;
         private float time;
         private MapModel map;
@@ -22,6 +23,11 @@ public class GameController : MonoBehaviour
         private int limitedValue;
         private bool limitedGame;
         private int countlevels = 0;
+
+        private Vector3 levelExit;
+        private bool isWaitingNextLevel=false;
+
+    private Animator win_anim;
         private void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
@@ -30,6 +36,7 @@ public class GameController : MonoBehaviour
         {
             map = GetComponent<MapModel>();
             ballController = ball.GetComponent<BallController>();
+            win_anim = _exit.GetComponent<Animator>();
             createMap(map.maze,level);
             uiLevel = level + 1;
             _level.text = "Level " + uiLevel;
@@ -43,7 +50,9 @@ public class GameController : MonoBehaviour
           
             ball.transform.localPosition = 
                     new Vector3(map.ballPosition[level, 0], map.ballPosition[level, 1], map.ballPosition[level, 2]);
-            int childCount = 0;
+        levelExit = new Vector3(map.exitPosition[level, 0], map.exitPosition[level, 1], map.exitPosition[level, 2]);
+        _exit.transform.localPosition = levelExit;
+        int childCount = 0;
             for (int i = 0; i < 13; i++)
             {
                 for (int j = 0; j < 13; j++)
@@ -140,6 +149,9 @@ public class GameController : MonoBehaviour
             uiLevel = countlevels + 1;
             _level.text = "Level " + uiLevel;
             createMap(map.maze, level);
+          ballController.isStop = false;
+            isWaitingNextLevel = false;
+        win_anim.Play("bamboo");
 
     }
     #endregion
@@ -149,20 +161,50 @@ public class GameController : MonoBehaviour
             // ToDo Add Particular Effect
             // Zemin hareket ettirilecek
            // _level.text = level+1 + ". level";
-        _nextGame.gameObject.SetActive(true);
+       // _nextGame.gameObject.SetActive(true);
+    //    ballController.isStop = true;
+        StartCoroutine("autoPressNextLevel");
         }
 
+    IEnumerator autoPressNextLevel()
+    {
+        win_anim.Play("bamboo_winning_condition");
+        ballController.isStop = true;
+        ballController.ballSetStop();
+        ballController.touchController.Direction = new Vector2(0, 0);
+        yield return new WaitForSeconds(2.0f);
+        _nextGame.onClick.Invoke();
+        ballController.isStop = false;
+
+    }
         private void FixedUpdate()
         {
-            _limitedCounter.text = (limitedValue-ballController.MoveCounter).ToString();
-            if ((float)(ballController.ColoredWallCounter)/levelPassCounter > 0.5f)
-            {
-                levelFinished();                
-            }
+          //  _limitedCounter.text = (limitedValue-ballController.MoveCounter).ToString();
+        /*
+         * Winning condition is cover area > 50%
+          if ((float)(ballController.ColoredWallCounter)/levelPassCounter > 0.5f)
+              {
+                  levelFinished();                
+              }*/
+        if(!isWaitingNextLevel)
+            ExitCheck();
 
         if (ballController.MoveCounter == limitedValue && limitedGame)
                 gameOverOpenPage();
         }
+
+    void ExitCheck()
+    {
+        if(ball.transform.position == levelExit)
+        {
+            levelFinished();
+            Debug.Log(ball.transform.position);
+            isWaitingNextLevel = true;
+        }
+
     }
+        
+
+}
 
 

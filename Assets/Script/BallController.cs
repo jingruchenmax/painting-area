@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
+    public bool isStop = false;
     private enum HitDirection { None, Forward, Back, Left, Right }
     private string collisionSide;
     private Rigidbody rb;
     private int coloredWallCounter = 0;
-    private TouchController touchController;
+    public TouchController touchController;
     private int moveCounter = 0;
 
     public int MoveCounter
@@ -34,15 +35,15 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.tag == "floor")
         {
-            if (collision.gameObject.GetComponent<Renderer>().material.color != Color.black)
+            if (collision.gameObject.GetComponent<Renderer>().material.color != Color.gray)
             {
                 coloredWallCounter++;
-                collision.gameObject.GetComponent<Renderer>().material.color = Color.black;
+                collision.gameObject.GetComponent<Renderer>().material.color = Color.gray;
             }
         }
     }
 
-    private void ballSetStop()
+    public void ballSetStop()
     {
         touchController.BallMove = false;
         rb.velocity = new Vector3(0, 0, 0);
@@ -89,26 +90,31 @@ public class BallController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (touchController.Direction == Vector2.up && collisionSide != "Back")
+        if (!isStop)
         {
-            ballMove(Vector3.forward, Time.deltaTime);
+            if (touchController.Direction == Vector2.up && collisionSide != "Back")
+            {
+                ballMove(Vector3.forward, Time.deltaTime);
+            }
+            else if (touchController.Direction == Vector2.down && collisionSide != "Forward")
+            {
+                ballMove(-Vector3.forward, Time.deltaTime);
+            }
+            else if (touchController.Direction == Vector2.right && collisionSide != "Left")
+            {
+                ballMove(Vector3.right, Time.deltaTime);
+            }
+            else if (touchController.Direction == Vector2.left && collisionSide != "Right")
+            {
+                ballMove(-Vector3.right, Time.deltaTime);
+
+            }
+            else
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+
         }
-        else if (touchController.Direction == Vector2.down && collisionSide != "Forward")
-        {
-            ballMove(-Vector3.forward, Time.deltaTime);
-        }
-        else if (touchController.Direction == Vector2.right && collisionSide != "Left")
-        {
-             ballMove(Vector3.right, Time.deltaTime);
-        }
-        else if (touchController.Direction == Vector2.left && collisionSide != "Right")
-        {
-            ballMove(-Vector3.right, Time.deltaTime);
-            
-        }
-        else
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
+
     }
 }
