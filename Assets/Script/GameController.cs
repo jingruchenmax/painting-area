@@ -100,7 +100,7 @@ public class GameController : MonoBehaviour
             isTrackingPlayer = false;
             playerTrace = new List<Vector3>();
 
-        if (map.enemyPosition[level, 1] != -1)
+        if (map.enemyPosition[level, 1] == 0)
         {
             hasEnemy = true;
             enemyOriginalPosition = new Vector3(map.enemyPosition[level, 0], map.enemyPosition[level, 1], map.enemyPosition[level, 2]);
