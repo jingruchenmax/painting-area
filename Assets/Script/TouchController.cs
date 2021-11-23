@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 
 public class TouchController : MonoBehaviour
 {
@@ -34,7 +34,7 @@ public class TouchController : MonoBehaviour
         get => direction;
         set => direction = value;
     }
-
+    /*
     private void Awake()
     {
         controls = new InputController();
@@ -71,7 +71,7 @@ public class TouchController : MonoBehaviour
     private void OnDisable()
     {
         controls.XboxController.Disable();
-    }
+    }*/
     private void Update()
     {
         // Top hareket ederken başka yöne hareket ettirilmemesi için kontrol konulmuştur.
@@ -94,7 +94,7 @@ public class TouchController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftArrow))
                 direction = Vector2.left;
 #endif
-        /*   // Tocuh kontrol kısmı https://gist.github.com/Fonserbc/ca6bf80b69914740b12da41c14023574 adresinden alınmıştır.
+        // Tocuh kontrol kısmı https://gist.github.com/Fonserbc/ca6bf80b69914740b12da41c14023574 adresinden alınmıştır.
            if (Input.touches.Length > 0)
            {
                Touch t = Input.GetTouch(0);
@@ -138,7 +138,7 @@ public class TouchController : MonoBehaviour
                        }
                    }
                }
-           }*/
+           }
     }
 }
 
