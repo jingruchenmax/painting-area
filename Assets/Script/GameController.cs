@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 
 public class GameController : MonoBehaviour
     {
@@ -36,7 +35,7 @@ public class GameController : MonoBehaviour
 
         private Animator win_anim;
 
-        private DataCollecting dataCollecting;
+     //   private DataCollecting dataCollecting;
         
     public Animator dead_anim;
 
@@ -44,19 +43,16 @@ public class GameController : MonoBehaviour
     public GameObject effectAudio;
     BackgroundAudioController backgroundAudioController;
     EffectAudioController effectAudioController;
-    InputController controls;
     private void Awake()
         {
             DontDestroyOnLoad(this.gameObject);
-        controls = new InputController();
-        controls.XboxController.NewGame.performed += ctx => NewPlayer();
 
     }
         private void Start()
         {
             map = GetComponent<MapModel>();
             ballController = ball.GetComponent<BallController>();
-            dataCollecting = GetComponent<DataCollecting>();
+        //    dataCollecting = GetComponent<DataCollecting>();
             enemyController = enemy.GetComponent<EnemyController>();
             win_anim = _exit.GetComponent<Animator>();
             backgroundAudioController = backgroundAudio.GetComponent<BackgroundAudioController>();
@@ -178,8 +174,8 @@ public class GameController : MonoBehaviour
 
         public void NewPlayer()
         {
-        dataCollecting.WriteToDoc();
-        dataCollecting.NewPlayer();
+     //   dataCollecting.WriteToDoc();
+       // dataCollecting.NewPlayer();
         // dataCollecting.NewPlayer();
         level = 0;
         countlevels = 0;
@@ -197,8 +193,9 @@ public class GameController : MonoBehaviour
                 _limitedCounter.gameObject.SetActive(false);
             }
             level++;
-            _nextGame.gameObject.SetActive(false); 
-            uiLevel = dataCollecting.level;
+            _nextGame.gameObject.SetActive(false);
+        //   uiLevel = dataCollecting.level;
+            uiLevel = level;
             _level.text = "Level " + uiLevel;
             createMap(map.maze, level);
             ballController.isStop = false;
@@ -215,8 +212,8 @@ public class GameController : MonoBehaviour
         // _level.text = level+1 + ". level";
         // _nextGame.gameObject.SetActive(true);
         //    ballController.isStop = true;
-        dataCollecting.AddNewGame((float)(ballController.ColoredWallCounter) / levelPassCounter,true);
-        dataCollecting.NextLevel();
+     //   dataCollecting.AddNewGame((float)(ballController.ColoredWallCounter) / levelPassCounter,true);
+    //    dataCollecting.NextLevel();
         effectAudioController.PlayWinEffect();
         StartCoroutine("autoPressNextLevel");
         }
@@ -229,8 +226,8 @@ public class GameController : MonoBehaviour
         //    ballController.isStop = true;
         dead_anim.Play("death");
         effectAudioController.PlayLoseEffect();
-        dataCollecting.AddNewGame((float)(ballController.ColoredWallCounter) / levelPassCounter,false);
-        dataCollecting.ReplayLevel();
+     //   dataCollecting.AddNewGame((float)(ballController.ColoredWallCounter) / levelPassCounter,false);
+     //   dataCollecting.ReplayLevel();
         StartCoroutine("autoReplayLevel");
     }
 
@@ -270,14 +267,14 @@ public class GameController : MonoBehaviour
               {
                   levelFinished();                
               }*/
-
+        /*
         if (Input.GetKeyDown(KeyCode.N))
             NewPlayer();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
-            dataCollecting.WriteToDoc();
-        }
+       //     dataCollecting.WriteToDoc();
+        }*/
 
         if (!isWaitingNextLevel)
         {
