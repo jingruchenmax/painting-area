@@ -75,14 +75,6 @@ public class TouchController : MonoBehaviour
     private void Update()
     {
         // Top hareket ederken başka yöne hareket ettirilmemesi için kontrol konulmuştur.
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            direction = Vector2.up;
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            direction = Vector2.down;
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-            direction = Vector2.right;
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            direction = Vector2.left;
 #if UNITY_EDITOR
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
