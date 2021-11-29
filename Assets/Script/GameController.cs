@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
     {
         [SerializeField] private GameObject ball;
-        [SerializeField] private Transform maze, floor;
+        [SerializeField] private Transform maze, floor, wall;
 
         public Text _level,_limitedCounter;
         public Button _nextGame;
@@ -88,7 +88,8 @@ public class GameController : MonoBehaviour
                         maze.GetChild(childCount).gameObject.SetActive(true);
                         floor.GetChild(childCount).gameObject.SetActive(false);
                     }
-                    floor.GetChild(childCount).gameObject.GetComponent<Renderer>().material.color = Color.white;
+                    floor.GetChild(childCount).gameObject.GetComponent<Renderer>().material.color = new Color(38/255f,206 / 255f, 60 / 255f);
+                    wall.GetChild(childCount).gameObject.GetComponent<Renderer>().material.color = new Color(38 / 255f, 206 / 255f, 60 / 255f);
                     childCount++;
                 }
             }

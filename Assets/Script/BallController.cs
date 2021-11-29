@@ -11,7 +11,7 @@ public class BallController : MonoBehaviour
     private int coloredWallCounter = 0;
     public TouchController touchController;
     private int moveCounter = 0;
-
+    private Color dirt;
     public int MoveCounter
     {
         get => moveCounter;
@@ -28,6 +28,7 @@ public class BallController : MonoBehaviour
     {
         touchController = GetComponent<TouchController>();
         rb = GetComponent<Rigidbody>();
+        dirt = new Color(225/255f, 204 / 255f, 153 / 255f);
         ballSetStop();
     }
 
@@ -35,10 +36,10 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.tag == "floor")
         {
-            if (collision.gameObject.GetComponent<Renderer>().material.color != Color.gray)
+            if (collision.gameObject.GetComponent<Renderer>().material.color != dirt)
             {
                 coloredWallCounter++;
-                collision.gameObject.GetComponent<Renderer>().material.color = Color.gray;
+                collision.gameObject.GetComponent<Renderer>().material.color = dirt;
             }
         }
     }
